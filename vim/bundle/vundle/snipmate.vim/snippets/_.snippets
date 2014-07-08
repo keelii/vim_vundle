@@ -1,0 +1,18 @@
+# Global snippets
+snippet lorem
+	Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis tincidunt erat leo. Praesent faucibus, urna et feugiat consequat, diam turpis facilisis erat, at tristique felis orci ut diam. Nulla quis ultricies turpis. Nunc luctus eleifend ante in pharetra. Vestibulum mauris odio, sagittis mattis pulvinar sit amet, vestibulum id sem. Quisque porttitor ultricies dui, et bibendum magna pharetra rhoncus. Curabitur lacinia mi erat, lobortis interdum dui sollicitudin ut. Mauris odio elit, cursus eget mattis eget, sagittis sit amet nisi. Suspendisse a libero purus. Praesent magna ligula, varius at bibendum ut, gravida quis orci. Mauris non elit gravida, commodo elit sed, vestibulum quam. Morbi ultrices urna non sem sodales, convallis auctor nulla blandit. Vivamus massa orci, euismod non hendrerit in, dignissim ac mauris. Curabitur volutpat, risus non rutrum dictum, urna risus venenatis erat, sit amet tempor ligula neque sed ante.
+
+snippet date
+	`strftime("%Y-%m-%d")`
+snippet ddate
+	`strftime("%b %d, %Y")`
+
+# for vm template
+snippet foreach_vm
+	#set( $arr = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11] )
+	#foreach( $item in $arr )
+		$1
+	#end
+snippet if_vm
+	#if ( ${1:true} )
+	#end

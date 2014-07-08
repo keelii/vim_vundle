@@ -1,0 +1,208 @@
+# Prototype
+snippet proto
+	${1:class_name}.prototype = {
+		${2:method}: function() {
+			${3}
+		}
+	}
+# Function
+snippet fun
+	function ${1:function_name}(${2:argument}) {
+		${3:// body...}
+	}
+# Anonymous Function
+snippet f
+	function(${1}) {
+		${2}
+	}
+# if
+snippet if
+	if ( ${1} ) {
+		${2}
+	}
+# if ... else
+snippet ife
+	if ( ${1:true} ) {
+		${2}
+	} else {
+		${3}
+	}
+# tertiary conditional
+snippet t
+	${1:/* condition */} ? ${2:a} : ${3:b}
+# switch
+snippet switch
+	switch(${1:expression}) {
+		case '${3:case}':
+			${4:// code}
+			break;
+		${5}
+		default:
+			${2:// code}
+	}
+# case
+snippet case
+	case '${1:case}':
+		${2:// code}
+		break;
+	${3}
+# for (...) {...}
+snippet for
+	for (var ${2:i} = 0; $2 < ${1:Things}.length; $2${3:++}) {
+		${4:$1[$2]}
+	}
+# for (...) {...} (Improved Native For-Loop)
+snippet forr
+	for (var ${2:i} = ${1:Things}.length - 1; $2 >= 0; $2${3:--}) {
+		${4:$1[$2]}
+	}
+# while (...) {...}
+snippet while
+	while (${1:/* condition */}) {
+		${2:/* code */}
+	}
+# do...while
+snippet do
+	do {
+		${2:/* code */}
+	} while (${1:/* condition */});
+snippet try
+	try {
+		${1:// code}
+	} catch(e) {
+		${2:throw new Error('error');}
+	}
+# Object Method
+snippet :f
+	${1:method_name}: function( ${2:attribute} ) {
+		${4}
+	}${3:,}
+# setTimeout function
+snippet timeout
+	timer = setTimeout(function() {
+		${2:}
+	}, ${1:1000});
+# setInterval function
+snippet interval
+	interval = setInterval(function() {
+		${2:}
+	}, ${1:1000});
+# Get Elements
+snippet get
+	getElementsBy${1:TagName}('${2}');
+# Get Element
+snippet gett
+	getElementBy${1:Id}('${2}')${3}
+snippet cl
+	console.log(${1});
+# Javascript Document Comment
+snippet /**
+	/**
+	 * ${1:Method Description}
+	 * @param {${2:String}}		${3:desc}
+	 * @param {${4:Number}}		${5:desc}
+	 * @return {${6:String}}	${7:desc}
+	 */
+	 ${8}
+# Javascript Document simply Comment
+snippet /*
+	/**
+	* ${1}
+	*/
+# jQuery domReady fn
+snippet $
+	$(function() {
+		${1}
+	});
+# Anonymous wrap fn
+snippet ()
+	(function() {
+		${1}
+	})();
+# TPL list
+snippet TPL:list
+	var ${1:TPL} = ''
+		+'<ul class="lh">'
+		+'    {for item in data}'
+		+'    {if Number(item.jp)>=0}'
+		+'    <li data-push="${pageConfig.product.GrecommendSkus.push(item.sku)}" class="fore1" data-clk="${item.clk}">'
+		+'        <div class="p-img"><a target="_blank" href="http://item.jd.com/${item.sku}.html"><img height="100" width="100" alt="${item.t}" data-img="1" src="${pageConfig.FN_GetImageDomain(item.sku)}n4/${item.img}"></a></div>'
+		+'        <div class="p-name"><a target="_blank" href="http://item.jd.com/${item.sku}.html"" title="${item.t}">${item.t}</a></div>'
+		+'        <div class="p-price"><strong class="J-p-${item.sku}">￥${item.jp}</strong></div>'
+		+'    </li>'
+		+'    {/if}'
+		+'    {/for}'
+		+'</ul>';
+# jQuery plugin design pattern
+snippet jQuery:plugin
+	(function ($) {
+		/**
+		 * ${1:pluginName}插件
+		 */
+		var $1 = function (that, options, callback) {
+
+			this.opts = $.extend({
+				options: 'options you want to set'
+
+			}, options);
+
+			this.$o = $(that);
+			this.callback = callback || function() {};
+
+			this.init();
+		};
+
+		$1.prototype = {
+			init: function() {
+				// 插件入口
+			},
+			onComplate: function() {
+				if ( typeof this.callback === 'function' ) {
+					this.callback.apply(this.$o, ['[args] you want to return to callback']);
+				}
+			}
+		};
+
+		$.fn.$1 = function (options, callback) {
+
+			return this.each(function () {
+				// 实例化插件对象
+				var plugin = new $1(this, options, callback);
+
+				$(this).data('$1', plugin);
+			});
+		};
+	}(jQuery));
+snippet TPL:init
+	seajs.config({
+		//comboSyntax: ['??', ','],
+		comboExcludes: /.*/,
+		base: 'http://misc.360buyimg.com/',
+		alias: {
+			// global
+			globalInit: 'jdf/1.0.0/unit/globalInit/1.0.0/globalInit',
+
+			// plugin
+			trimPath: 'jdf/1.0.0/unit/trimPath/1.0.0/trimPath',
+			ui: 'jdf/1.0.0/ui/ui/1.0.0/ui.js',
+			lazyload: 'jdf/1.0.0/ui/lazyload/1.0.0/lazyload',
+			switchable: 'jdf/1.0.0/ui/switchable/1.0.0/switchable',
+			trimPath: 'jdf/1.0.0/unit/trimPath/1.0.0/trimPath.js',
+			imgScroll: 'product/js/2013/jQuery.imgScroll-lite-min',
+
+			// page
+			tools: 'product/module/tools'
+		}
+	});
+
+	define(function(require, exports, module) {
+		var ui = require('ui');
+		var globalInit = require('globalInit');
+		var trimPath = require('trimPath');
+
+		var lazyload = require('lazyload');
+
+		$('body').lazyload({
+			type:'img'
+		});
+	});

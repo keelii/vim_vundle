@@ -1,0 +1,264 @@
+# Some useful Unicode entities
+# Non-Breaking Space
+snippet nbs
+	&nbsp;
+# ←
+snippet left
+	&#x2190;
+# →
+snippet right
+	&#x2192;
+# ↑
+snippet up
+	&#x2191;
+# ↓
+snippet down
+	&#x2193;
+# chinese space
+snippet kg:html
+	&#x3000;
+snippet kg:js
+	\u3000
+# Generic Doctype
+snippet html
+	<html>
+	${1}
+	</html>
+snippet xhtml
+	<html xmlns="http://www.w3.org/1999/xhtml">
+	${1}
+	</html>
+snippet body
+	<body>
+		${1}
+	</body>
+snippet head
+	<head>
+		<meta http-equiv="content-type" content="text/html; charset=utf-8"`Close()`>
+
+		<title>${1:`substitute(Filename('', 'Page Title'), '^.', '\u&', '')`}</title>
+		${2}
+	</head>
+snippet title
+	<title>${1:`substitute(Filename('', 'Page Title'), '^.', '\u&', '')`}</title>${2}
+snippet script
+	<script type="text/javascript" charset="utf-8">
+		${1}
+	</script>${2}
+snippet script:src
+	<script src="${1}.js" type="text/javascript"></script>${2}
+snippet style
+	<style type="text/css">
+		${1}
+	</style>${2}
+snippet base
+	<base href="${1}" target="${2}"`Close()`>
+snippet br
+	<br`Close()[1:]`>
+snippet div
+	<div id="${1:name}">
+		${2}
+	</div>
+# Embed QT Movie
+snippet movie
+	<object width="$2" height="$3" classid="clsid:02BF25D5-8C17-4B23-BC80-D3488ABDDC6B"
+	 codebase="http://www.apple.com/qtactivex/qtplugin.cab">
+		<param name="src" value="$1"`Close()`>
+		<param name="controller" value="$4"`Close()`>
+		<param name="autoplay" value="$5"`Close()`>
+		<embed src="${1:movie.mov}"
+			width="${2:320}" height="${3:240}"
+			controller="${4:true}" autoplay="${5:true}"
+			scale="tofit" cache="true"
+			pluginspage="http://www.apple.com/quicktime/download/"
+		`Close()[1:]`>
+	</object>${6}
+snippet fieldset
+	<fieldset id="$1">
+		<legend>${1:name}</legend>
+
+		${3}
+	</fieldset>
+snippet form
+	<form action="${1:`Filename('$1_submit')`}" method="${2:get}" accept-charset="utf-8">
+		${3}
+
+	<p><input type="submit" value="Continue &rarr;"`Close()`></p>
+	</form>
+snippet h1
+	<h1>${1}</h1>
+snippet h2
+	<h2>${1}</h1>
+snippet h3
+	<h1>${1}</h1>
+snippet h4
+	<h1>${1}</h1>
+snippet h5
+	<h1>${1}</h1>
+snippet a
+	<a href="#none"${1: target="_blank"}>${2}</a>
+snippet span
+	<span></span>
+snippet strong
+	<strong></strong>
+snippet em
+	<em></em>
+snippet i
+	<i></i>
+snippet b
+	<b></b>
+snippet s
+	<s></s>
+snippet input
+	<input type="${1:text/submit/hidden/button}" value="${2}" />${3}
+snippet label
+	<label for="${2:$1}">${1:name}</label><input type="${3:text/submit/hidden/button}" name="${4:$2}" value="${5}" id="${6:$2}"`Close()`>${7}
+snippet link
+	<link rel="stylesheet" href="${1:../app/css/master}.css" type="text/css" />${2}
+snippet opt
+	<option value="${1:option}">${2:$1}</option>${3}
+snippet option
+	<option>${1:option}</option>${2}
+snippet select
+	<select name="${1:some_name}" id="${2:$1}">
+		<option value="${3:option}">${4:$3}</option>
+	</select>${5}
+snippet table
+	<table border="${1:0}">
+		<tr><th>${2:Header}</th></tr>
+		<tr><th>${3:Data}</th></tr>
+	</table>${4}
+snippet textarea
+	<textarea name="${1:Name}" rows="${2:8}" cols="${3:40}">${4}</textarea>${5}
+
+snippet jquery1.2.6
+	<script type="text/javascript" src="http://misc.360buyimg.com/lib/js/e/jquery-1.2.6.pack.js"></script>
+snippet base.css
+	<link rel="stylesheet" type="text/css" href="http://misc.360buyimg.com/lib/skin/2013/base.css" />
+snippet base-2011.js
+	<script type="text/javascript" src="http://misc.360buyimg.com/lib/js/2012/base-2011.js"></script>
+snippet base-v1.js
+	<script type="text/javascript" src="http://misc.360buyimg.com/lib/js/2012/base-v1.js"></script>
+snippet lib-v1.js
+	<script type="text/javascript" src="http://misc.360buyimg.com/lib/js/2012/lib-v1.js"></script>
+snippet pshow.js
+	<link rel="stylesheet" type="text/css" href="http://misc.360buyimg.com/product/skin/2012/pshow.css" />
+snippet seajs
+	<script type="text/javascript" src="http://misc.360buyimg.com/lib/js/seajs/??sea.js,seajs-combo.js"></script>
+# HTML 5 base
+snippet html:5
+	<!DOCTYPE HTML>
+	<html lang="zh-CN">
+	<head>
+		<meta charset="${1:gb2312}">
+		<title></title>
+	</head>
+	<body>
+		${2}
+	</body>
+	</html>
+# A html modular
+snippet mod
+	<div id="${1:mod}" class="m">
+		<div class="mt">
+			${2}
+		</div>
+		<div class="mc">
+			${3}
+		</div>
+	</div><!-- $1 -->
+snippet demo
+	<!DOCTYPE HTML>
+	<html lang="zh-CN">
+	<head>
+		<meta charset="gb2312">
+		<title> ${1:test} </title>
+		<link rel="stylesheet" type="text/css" href="http://misc.360buyimg.com/lib/skin/2013/base.css" />
+
+		<style type="text/css">
+		.box { border:1px solid #ddd; padding:20px; margin:100px; }
+		</style>
+
+	</head>
+	<body>
+		<script type="text/javascript" src="http://misc.360buyimg.com/lib/js/2012/base-v1.js"></script>
+
+		<div class="box">
+			<h1>$1</h1>
+
+			<p> </p>
+
+		</div>
+
+		<script type="text/javascript" src="http://misc.360buyimg.com/lib/js/e/jquery-1.2.6.pack.js"></script>
+		<script type="text/javascript" src="http://misc.360buyimg.com/lib/js/2012/lib-v1.js"></script>
+
+	</body>
+	</html>
+snippet img
+	<img class="loading-style2" src="http://temp.im/${1:220}x${2:220}" width="$1" height="$2" alt="" />
+snippet pimg
+	<div class="p-img"><a target="_blank" href="#none"><img class="loading-style2" src="http://temp.im/${1:220}x${2:220}" width="$1" height="$2" alt="" /></a></div>
+snippet pname
+	<div class="p-name"><a target="_blank" href="#none">商品名称商品名称商品名称商品名称商品名称</a></div>
+snippet list
+	<ul>
+		<li class="fore1">
+			<div class="p-img">
+				<a target="_blank" title="" href="http://item.jd.com/.html"><img height="100" width="100" alt="" src="" class="loading-style2"></a>
+			</div>
+			<div class="p-name">
+				<a target="_blank" title="" href="http://item.jd.com/.html"></a>
+			</div>
+			<div class="p-price">
+				<strong class="J-p-"></strong>
+			</div>
+		</li>
+	</ul>
+snippet TPL:list
+	+'<ul class="lh">'
+	+'    {for item in data}'
+	+'    <li data-push="${pageConfig.cartRecoSkus.push(item.sku)}" class="fore1" data-clk="${item.clk}">'
+	+'        <div class="p-img"><a target="_blank" href="http://item.jd.com/${item.sku}.html"><img height="100" width="100" alt="${item.t}" data-img="1" src="${pageConfig.FN_GetImageDomain(item.sku)}n4/${item.img}" class="loading-style2"></a></div>'
+	+'        <div class="p-name"><a target="_blank" href="http://item.jd.com/${item.sku}.html"" title="${item.t}">${item.t}</a></div>'
+	+'        <div class="p-price"><strong class="J-p-${item.sku}">￥${item.jp}</strong></div>'
+	+'    </li>'
+	+'    {/for}'
+	+'</ul>'
+snippet TPL:html_jdf
+	<!DOCTYPE html>
+	<html lang="zh-CN">
+	<head>
+		<meta charset="utf-8">
+		<title> ${1:channel} </title>
+		<link rel="stylesheet" type="text/css" href="http://misc.360buyimg.com/lib/skin/2013/base.css" />
+		<script type="text/javascript">
+			pageConfig = {
+				compatible: true
+			};
+		</script>
+
+		{%widgetOutputName="${2:education}"%}
+		{%widget name="$2" type="css"%}
+	</head>
+	<body>
+	{%widget name="header"%}
+
+	<div class="w">
+		<div class="breadcrumb">
+			<strong><a href="">一级频道</a></strong>
+			<span>&nbsp;&gt;&nbsp;<a href=""> $1 </a></span>
+		</div>
+	</div>
+
+
+
+	{%widget name="footer"%}
+
+	<script type="text/javascript" src="http://misc.360buyimg.com/jdf/lib/jquery-1.6.4.js"></script>
+	<script type="text/javascript" src="http://misc.360buyimg.com/jdf/1.0.0/unit/base/1.0.0/base.js"></script>
+	<script type="text/javascript">
+		seajs.use('../app/js/$2.js');
+	</script>
+	</body>
+	</html>
