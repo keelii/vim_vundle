@@ -74,7 +74,7 @@ if MySys() == "windows"
     " 设置 alt 键不映射到菜单栏
     set winaltkeys=no
     "设置字体、字号
-    set guifont=Consolas:h15
+    set guifont=Source_Code_Pro:h12
 endif
 
 " 设置帮助文档语言
@@ -123,7 +123,7 @@ set softtabstop=4
 set foldmethod=indent
 
 "设置折叠级别：比如第3层缩进后的内容折叠
-set foldlevel=1
+set foldlevel=0
 
 "文件类型插件
 filetype indent plugin on
@@ -163,8 +163,12 @@ syntax on
 set nobomb
 set laststatus=2
 set backspace=indent,eol,start whichwrap+=<,>,[,]
-" set list listchars=eol:,tab:,trail:.,
-set nolist
+set list
+set listchars=tab:▶\ ,eol:¬
+" set nolist
+"Invisible character colors
+highlight NonText guifg=#003f4f
+highlight SpecialKey guifg=#003f4f
 
 " ----- key mapping -----
 " 设置 leader key 为「,」
