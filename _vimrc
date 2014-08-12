@@ -4,7 +4,8 @@
 " Mail: keeliizhou@gmail.com
 "------------------------------
 
-" -----  平台判断
+" Functions {{{
+
 function! MySys()
     if has("win32")
         return "windows"
@@ -13,7 +14,9 @@ function! MySys()
     endif
 endfunction
 
-" ---------- Vundle ----------
+" }}}
+" Vundle {{{
+
 set nocompatible
 filetype off
 
@@ -28,33 +31,25 @@ endif
 Bundle 'gmarik/vundle'
 Bundle 'scrooloose/nerdtree'
 Bundle 'mattn/emmet-vim'
-" Bundle 'tsaleh/vim-matchit'
 Bundle 'msanders/snipmate.vim'
 Bundle 'Lokaltog/vim-powerline'
-" Bundle 'jiangmiao/auto-pairs'
 Bundle 'scrooloose/nerdcommenter'
 Bundle 'tpope/vim-surround'
 Bundle 'godlygeek/tabular'
-" Bundle 'mattn/calendar-vim'
 Bundle 'pangloss/vim-javascript'
 Bundle 'altercation/vim-colors-solarized'
 Bundle 'mklabs/grunt.vim'
 Bundle 'Shougo/neocomplete.vim'
-" Bundle 'marijnh/tern_for_vim'
 Bundle 'plasticboy/vim-markdown'
-
 " fixed conflict width neocomplete
 Bundle 'kris89/vim-multiple-cursors'
 " ----- https://github.com/vim-scripts -----
 Bundle 'jsbeautify'
-" Bundle 'velocity.vim'
 Bundle 'L9'
-" Bundle 'FuzzyFinder'
-" Bundle 'AutoComplPop'
-" Bundle 'TabBar'
-" Bundle 'minibufexplorerpp'
-" ---------- Vundle ----------
+Bundle 'FuzzyFinder'
 
+" }}}
+" GUI {{{
 
 if MySys() == "windows"
     " -----  应用英文菜单界面
@@ -77,6 +72,9 @@ if MySys() == "windows"
     set guifont=Source_Code_Pro:h12
 endif
 
+" }}}
+" General options {{{
+
 " 设置帮助文档语言
 set helplang=cn
 
@@ -89,8 +87,8 @@ colorscheme solarized
  set background=dark
 
 "显示行号
-set number
-" set relativenumber
+set nonumber
+set norelativenumber
 
 "当前行高亮
 set cursorline
@@ -164,15 +162,28 @@ set nobomb
 set laststatus=2
 set backspace=indent,eol,start whichwrap+=<,>,[,]
 set list
-set listchars=tab:▶\ ,eol:¬
+set listchars=tab:▶\ ,eol:¬,trail:·,extends:>,precedes:<
+set showbreak=›
+" 分割出来的窗口位于当前窗口下边/右边
+set splitbelow
+set splitright
+set linebreak
 " set nolist
 "Invisible character colors
 highlight NonText guifg=#003f4f
 highlight SpecialKey guifg=#003f4f
+" }}}
+" Key mapping {{{
 
-" ----- key mapping -----
 " 设置 leader key 为「,」
 let mapleader=","
+
+if has("mac") || has("macunix")
+    nmap <D-j> <M-j>
+    nmap <D-k> <M-k>
+    vmap <D-j> <M-j>
+    vmap <D-k> <M-k>
+endif
 
 map <leader>tn :tabnew<cr>
 map <leader>tc :tabclose<cr>
@@ -180,16 +191,16 @@ map <leader>th :tabp<cr>
 map <leader>tl :tabn<cr>
 
 " 移动分割窗口
-map <C-j> <C-W>j
-map <C-k> <C-W>k
-map <C-h> <C-W>h
-map <C-l> <C-W>l
+nmap <C-j> <C-W>j
+nmap <C-k> <C-W>k
+nmap <C-h> <C-W>h
+nmap <C-l> <C-W>l
 
 " 插入模式移动光标 alt + 方向键
-noremap! <M-j> <Down>
-noremap! <M-k> <Up>
-noremap! <M-h> <left>
-noremap! <M-l> <Right>
+inoremap <M-j> <Down>
+inoremap <M-k> <Up>
+inoremap <M-h> <left>
+inoremap <M-l> <Right>
 
 " diff 快捷键
 " 1. Ctrl-w K（把当前窗口移到最上边）
@@ -204,22 +215,48 @@ nmap <C-Down> ]c
 nmap <C-Up> [c
 nmap <F8> dp
 
+" 设置vv为选中一行内非空白文本
+nnoremap vv ^vg_
+" 转换当前行为大写
+inoremap <C-u> <esc>mzgUiw`za
+
+" 正常模式下 alt+j,k,h,l 调整分割窗口大小
+nnoremap <M-j> :resize +5<cr>
+nnoremap <M-k> :resize -5<cr>
+nnoremap <M-h> :vertical resize -5<cr>
+nnoremap <M-l> :vertical resize +5<cr>
+
+vnoremap H ^
+vnoremap L g_
+
+" 命令模式下的行首尾
+cnoremap <C-a> <home>
+cnoremap <C-e> <end>
+
+nnoremap <F2> :setlocal number!<cr>
+nnoremap <leader>w :set wrap!<cr>
+noremap <Leader>m mmHmt:%s/<C-V><cr>//ge<cr>'tzt'm
+
+" }}}
+" Visual mode search {{{
+
+" 可视模式内高亮选择字符
+function! s:VSetSearch()
+  let temp = @@
+  norm! gvy
+  let @/ = '\V' . substitute(escape(@@, '\'), '\n', '\\n', 'g')
+  let @@ = temp
+endfunction
+
+vnoremap * :<C-u>call <SID>VSetSearch()<CR>//<CR><c-o>
+vnoremap # :<C-u>call <SID>VSetSearch()<CR>??<CR><c-o>
+
+" }}}
+" map for specifitc env {{{
+
 if MySys() == "windows"
     imap <C-v> "+gP
     vmap <C-c> "+y
-    " backspace in Visual mode deletes selection
-    vnoremap <BS> d
-
-    " CTRL-C and CTRL-Insert are Copy
-    vnoremap <C-C> "+y
-    vnoremap <C-Insert> "+y
-
-    " CTRL-V and SHIFT-Insert are Paste
-    imap <C-V>		"+gP
-    map <S-Insert>		"+gP
-
-    cmap <C-V>		<C-R>+
-    cmap <S-Insert>		<C-R>+
 
     exe 'inoremap <script> <C-V>' paste#paste_cmd['i']
     exe 'vnoremap <script> <C-V>' paste#paste_cmd['v']
@@ -252,7 +289,9 @@ else
     nmap ,fp :let @*=expand("%:p")<CR>
 endif
 
-" ----- Plugin settings -----
+" }}}
+" Plugin settings {{{
+
 let g:Powerline_dividers_override = [' >>', '>', '<< ', '<']
 let g:Powerline_mode_n = 'N'
 let g:Powerline_mode_i = 'I'
@@ -262,9 +301,18 @@ let g:Powerline_mode_v = 'V'
 let NERDTreeQuitOnOpen = 1
 let NERDTreeDirArrows = 1
 let NERDTreeShowBookmarks = 1
+let NERDTreeMinimalUI = 1
+let NERDChristmasTree = 1
+let NERDTreeChDirMode = 2
 let NERDTreeIgnore=['build', 'build-html', 'node_modules']
 let NERDTreeAutoDeleteBuffer=1
 nmap <leader>n :NERDTreeToggle D:\Root <cr>
+" nmap <leader>nf :NERDTreeFind <cr>
+augroup ps_nerdtree
+    au!
+
+    au Filetype nerdtree setlocal nolist
+augroup END
 
 " NERDComment
 map <leader>ci :<cr>
@@ -292,7 +340,7 @@ let g:user_emmet_leader_key = '<c-y>'
 let g:user_emmet_settings = {
 \  'indentation' : '    '
 \}
-autocmd FileType html,css EmmetInstall
+autocmd FileType html,css,vm EmmetInstall
 
 " Multiple-cursor
 
@@ -316,82 +364,14 @@ let g:neocomplete#sources#syntax#min_keyword_length = 3
 let g:neocomplete#lock_buffer_name_pattern = '\*ku\*'
 
 let g:neocomplete#enable_auto_select = 1
-" Define dictionary.
-"let g:neocomplete#sources#dictionary#dictionaries = {
-    "\ 'default' : '',
-    "\ 'vimshell' : $HOME.'/.vimshell_hist',
-    "\ 'scheme' : $HOME.'/.gosh_completions'
-        "\ }
-
-" Define keyword.
-"if !exists('g:neocomplete#keyword_patterns')
-    "let g:neocomplete#keyword_patterns = {}
-"endif
-"let g:neocomplete#keyword_patterns['default'] = '\h\w*'
-
-" Plugin key-mappings.
-"inoremap <expr><C-g>     neocomplete#undo_completion()
-"inoremap <expr><C-l>     neocomplete#complete_common_string()
-
-" Recommended key-mappings.
-" <CR>: close popup and save indent.
-"inoremap <silent> <CR> <C-r>=<SID>my_cr_function()<CR>
-"function! s:my_cr_function()
-  "return neocomplete#close_popup() . "\<CR>"
-  "" For no inserting <CR> key.
-  ""return pumvisible() ? neocomplete#close_popup() : "\<CR>"
-"endfunction
-" <TAB>: completion.
-" inoremap <expr><TAB>  pumvisible() ? "\<C-n>" : "\<TAB>"
-" <C-h>, <BS>: close popup and delete backword char.
-"inoremap <expr><C-h> neocomplete#smart_close_popup()."\<C-h>"
-"inoremap <expr><BS> neocomplete#smart_close_popup()."\<C-h>"
-"inoremap <expr><C-y>  neocomplete#close_popup()
-"inoremap <expr><C-e>  neocomplete#cancel_popup()
-" Close popup by <Space>.
-"inoremap <expr><Space> pumvisible() ? neocomplete#close_popup() : "\<Space>"
-
-" For cursor moving in insert mode(Not recommended)
-"inoremap <expr><Left>  neocomplete#close_popup() . "\<Left>"
-"inoremap <expr><Right> neocomplete#close_popup() . "\<Right>"
-"inoremap <expr><Up>    neocomplete#close_popup() . "\<Up>"
-"inoremap <expr><Down>  neocomplete#close_popup() . "\<Down>"
-" Or set this.
-"let g:neocomplete#enable_cursor_hold_i = 1
-" Or set this.
-"let g:neocomplete#enable_insert_char_pre = 1
-
-" AutoComplPop like behavior.
-"let g:neocomplete#enable_auto_select = 1
-
-" Shell like behavior(not recommended).
-"set completeopt+=longest
-"let g:neocomplete#enable_auto_select = 1
-"let g:neocomplete#disable_auto_complete = 1
-"inoremap <expr><TAB>  pumvisible() ? "\<Down>" : "\<C-x>\<C-u>"
 
 " Enable omni completion.
 autocmd FileType css setlocal omnifunc=csscomplete#CompleteCSS
 autocmd FileType html,markdown setlocal omnifunc=htmlcomplete#CompleteTags
 autocmd FileType javascript setlocal omnifunc=javascriptcomplete#CompleteJS
 
-" Enable heavy omni completion.
-"if !exists('g:neocomplete#sources#omni#input_patterns')
-  "let g:neocomplete#sources#omni#input_patterns = {}
-"endif
-"let g:neocomplete#sources#omni#input_patterns.php = '[^. \t]->\h\w*\|\h\w*::'
-"let g:neocomplete#sources#omni#input_patterns.c = '[^.[:digit:] *\t]\%(\.\|->\)'
-"let g:neocomplete#sources#omni#input_patterns.cpp = '[^.[:digit:] *\t]\%(\.\|->\)\|\h\w*::'
-
-" For perlomni.vim setting.
-" https://github.com/c9s/perlomni.vim
-" let g:neocomplete#sources#omni#input_patterns.perl = '\h\w*->\h\w*\|\h\w*::'
-
-
-" ----- Functions or autocmd -----
-" 默认加载折叠
-" autocmd BufWinLeave *.* mkview
-" autocmd BufWinEnter *.* silent loadview
+" }}}
+" Autoload {{{
 
 " Remove trailing whitespace when writing a buffer, but not for diff files.
 " From: Vigil
@@ -412,6 +392,8 @@ hi TabLineFill  ctermfg=Black  ctermbg=Green     cterm=NONE
 hi TabLineSel   ctermfg=White  ctermbg=DarkBlue  cterm=NONE
 
 " au! BufRead,BufNewFile *.vm  setfiletype velocity
+" resize窗口的时候平均分割
+" au VimResized * :wincmd =
 
 function! Multiple_cursors_before()
     exe 'NeoCompleteLock'
@@ -422,3 +404,25 @@ function! Multiple_cursors_after()
     exe 'NeoCompleteUnlock'
     echo 'Enabled autocomplete'
 endfunction
+
+augroup ft_vm
+    au!
+    autocmd BufRead,BufNewFile *.vm setlocal syntax=html filetype=html
+    au FileType vm setlocal filetype=html
+augroup END
+
+augroup ft_css
+    au!
+
+    au Filetype less,css,scss setlocal foldmethod=marker
+    au Filetype less,css,scss setlocal foldmarker={,}
+    au Filetype less,css,scss setlocal foldlevel=1
+augroup END
+
+augroup ft_vim
+    au!
+
+    au FileType vim setlocal foldmethod=marker
+augroup END
+
+" }}}
