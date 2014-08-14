@@ -226,9 +226,6 @@ nnoremap <M-k> :resize -5<cr>
 nnoremap <M-h> :vertical resize -5<cr>
 nnoremap <M-l> :vertical resize +5<cr>
 
-vnoremap H ^
-vnoremap L g_
-
 " 命令模式下的行首尾
 cnoremap <C-a> <home>
 cnoremap <C-e> <end>
@@ -252,11 +249,24 @@ vnoremap * :<C-u>call <SID>VSetSearch()<CR>//<CR><c-o>
 vnoremap # :<C-u>call <SID>VSetSearch()<CR>??<CR><c-o>
 
 " }}}
-" map for specifitc env {{{
+" Keymap for specifitc env {{{
 
 if MySys() == "windows"
     imap <C-v> "+gP
     vmap <C-c> "+y
+    " backspace in Visual mode deletes selection
+    vnoremap <BS> d
+
+    " CTRL-C and CTRL-Insert are Copy
+    vnoremap <C-C> "+y
+    vnoremap <C-Insert> "+y
+
+    " CTRL-V and SHIFT-Insert are Paste
+    imap <C-V>		"+gP
+    map <S-Insert>		"+gP
+
+    cmap <C-V>		<C-R>+
+    cmap <S-Insert>		<C-R>+
 
     exe 'inoremap <script> <C-V>' paste#paste_cmd['i']
     exe 'vnoremap <script> <C-V>' paste#paste_cmd['v']
