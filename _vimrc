@@ -68,6 +68,50 @@ if MySys() == "windows"
     " 窗口大小
     set lines=35 columns=148
 
+    " 使用默认的tab样式，而不是系统的tab
+    set guioptions-=e
+
+set tabline=%!MyTabLine()
+
+function MyTabLabel(n)
+  let buflist = tabpagebuflist(a:n)
+  let winnr = tabpagewinnr(a:n)
+  let alist = split(bufname(buflist[winnr - 1]),'\')
+  let rtn ="0"
+  for ii in alist
+    let rtn=ii
+  endfor
+  return rtn
+endfunction
+
+function MyTabLine()
+  let s = ''
+  for i in range(tabpagenr('$'))
+    " select the highlighting
+    if i + 1 == tabpagenr()
+      let s .= '%#TabLineSel#'
+    else
+      let s .= '%#TabLine#'
+    endif
+
+    " set the tab page number (for mouse clicks)
+    let s .= '%' . (i + 1) . 'T'
+
+    " the label is made by MyTabLabel()
+    let s .= ' %{MyTabLabel(' . (i + 1) . ')} '
+  endfor
+
+  " after the last tab fill with TabLineFill and reset tab page nr
+  let s .= '%#TabLineFill#%T'
+
+  " right-align the label to close the current tab page
+  if tabpagenr('$') > 1
+    let s .= '%=%#TabLine#%999Xclose'
+  endif
+
+  return s
+endfunction
+
     " Vim 的默认寄存器和系统剪贴板共享
     set clipboard+=unnamed
     " 设置 alt 键不映射到菜单栏
@@ -205,6 +249,9 @@ inoremap <M-j> <Down>
 inoremap <M-k> <Up>
 inoremap <M-h> <left>
 inoremap <M-l> <Right>
+
+" IDE like delete
+inoremap <C-BS> <Esc>bdei
 
 " diff 快捷键
 " 1. Ctrl-w K（把当前窗口移到最上边）
