@@ -61,6 +61,10 @@ if MySys() == "windows"
     "不显示工具栏
     set guioptions-=T
     set guioptions-=m
+    " 不显示滚动条
+    set guioptions-=l
+    set guioptions-=r
+    set guioptions-=b
     " 窗口大小
     set lines=35 columns=148
 
